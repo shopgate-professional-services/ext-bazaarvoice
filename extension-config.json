@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "id": "@shopgate-project/bazaarvoice",
+  "configuration": {
+    "baseUrl": {
+      "type": "admin",
+      "destination": "backend",
+      "default": "https://api.bazaarvoice.com",
+      "params": {
+        "type": "text" ,
+        "label": "Bazaarvoice base url"
+      }
+    },
+    "apiKey": {
+      "type": "admin",
+      "destination": "backend",
+      "default": null,
+      "params": {
+        "type": "text" ,
+        "label": "API key"
+      }
+    },
+    "reviewSubmissionFields": {
+      "type": "admin",
+      "destination": "backend",
+      "default": {
+        "AgreedToTermsAndConditions": true
+      },
+      "params": {
+        "type": "text" ,
+        "label": "Send additional fields when review is submitted"
+      }
+    },
+    "sortMap": {
+      "type": "admin",
+      "destination": "backend",
+      "default": {
+        "relevance": "SubmissionTime:desc",
+        "dateDesc": "SubmissionTime:desc",
+        "dateAsc": "SubmissionTime:asc"
+      },
+      "params": {
+        "type": "text" ,
+        "label": "Sort map for Bazaarvoice"
+      }
+    }
+  },
+  "components": [],
+  "steps": [
+    {
+      "path": "extension/hooks/addReviewsStat.js",
+      "hooks": [
+        "shopgate.catalog.getProducts.v1:after",
+        "shopgate.catalog.getProductsByIds.v1:after"
+      ],
+      "input": [{ "key": "products" }],
+      "output": [{ "key": "products" }]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.getReview.v1",
+    "public": true,
+    "input": [
+      { "key": "productId", "id": "1" }
+    ],
+    "output": [
+      { "key": "id", "id": "206" },
+      { "key": "author", "id": "201" },
+      { "key": "date", "id": "202" },
+      { "key": "rate", "id": "203" },
+      { "key": "title", "id": "204", "optional": true },
+      { "key": "review", "id": "205", "optional": true }
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate-project/bazaarvoice",
+        "path": "@shopgate-project/bazaarvoice/steps/getUserReview.js",
+        "input": [
+          { "key": "productId", "id": "1" }
+        ],
+        "output": [
+          { "key": "id", "id": "206" },
+          { "key": "author", "id": "201" },
+          { "key": "date", "id": "202" },
+          { "key": "rate", "id": "203" },
+          { "key": "title", "id": "204", "optional": true },
+          { "key": "review", "id": "205", "optional": true }
+        ]
+      }
+    ]
+  }
+}

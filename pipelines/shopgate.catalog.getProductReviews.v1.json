@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.catalog.getProductReviews.v1",
+    "public": true,
+    "input": [
+      {"key": "productId", "id": "1"},
+      {"key": "offset", "id": "2", "optional": true },
+      {"key": "limit", "id": "3", "optional": true },
+      {"key": "sort", "id": "4", "optional": true },
+      {"key": "filterEmpty", "id": "5", "optional": true },
+      {"key": "sgxsMeta", "id": "202"}
+    ],
+    "output": [
+      {"key": "totalReviewCount", "id": "200"},
+      {"key": "reviews", "id": "201"}
+    ],
+    "steps": [
+      {
+        "type": "pipeline",
+        "id": "shopgate.catalog.getProduct.v1",
+        "input": [
+          {"key": "productId", "id": "1"},
+          {"key": "sgxsMeta", "id": "202"}
+        ],
+        "output": [
+          {"key": "baseProductId", "id": "203", "optional": true}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate-project/bazaarvoice",
+        "path": "@shopgate-project/bazaarvoice/steps/getProductReviews.js",
+        "input": [
+          {"key": "productId", "id": "1", "optional": true},
+          {"key": "baseProductId", "id": "203", "optional": true},
+          {"key": "offset", "id": "2", "optional": true },
+          {"key": "limit", "id": "3", "optional": true },
+          {"key": "sort", "id": "4", "optional": true },
+          {"key": "filterEmpty", "id": "5", "optional": true }
+        ],
+        "output": [
+          {"key": "totalReviewCount", "id": "200"},
+          {"key": "reviews", "id": "201"}
+        ]
+      }
+    ]
+  }
+}
