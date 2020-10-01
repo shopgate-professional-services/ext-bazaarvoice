@@ -3,6 +3,18 @@
 Integration of [Bazaarvoice](https://www.bazaarvoice.com/) (software that allows brands and retailers to collect and display several types of authentic user-generated content on their e-commerce websites).
 Bazaarvoice integration version: [5.4](https://developer.bazaarvoice.com/conversations-api/reference/v5.4)
 
+## Setup
+1. Add shop config `sgc_extension_settings` with value. Contact a dev to get the key.
+    ```json
+    {
+        "@shopgate-project": {
+            "redisSecret": "enterKeyHere"
+        }
+    }
+    ```
+2. deploy and configure extension
+
+
 ## Configuration
 
 - `baseUrl` (string): base url of bazaarvoice integration (default: https://api.bazaarvoice.com)

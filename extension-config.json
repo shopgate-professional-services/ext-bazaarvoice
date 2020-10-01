@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.0-rc.2",
   "id": "@shopgate-project/bazaarvoice",
   "configuration": {
     "baseUrl": {
