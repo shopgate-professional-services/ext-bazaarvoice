@@ -62,6 +62,17 @@
         "type": "text" ,
         "label": "Cache TTL time in seconds (for product ratings)"
       }
+    },
+    "redisClientSecret": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
+        "key": "value.@shopgate-project.redisSecret"
+      }
     }
   },
   "components": [],
