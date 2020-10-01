@@ -27,7 +27,7 @@
         "AgreedToTermsAndConditions": true
       },
       "params": {
-        "type": "text" ,
+        "type": "json" ,
         "label": "Send additional fields when review is submitted"
       }
     },
@@ -40,8 +40,27 @@
         "dateAsc": "SubmissionTime:asc"
       },
       "params": {
-        "type": "text" ,
+        "type": "json" ,
         "label": "Sort map for Bazaarvoice"
+      }
+    },
+    "cacheRevision": {
+      "type": "bigApi",
+      "destination": "backend",
+      "params": {
+        "method": "GET",
+        "service": "shop",
+        "path": "/v1/%(shopId)s/id",
+        "key": "data.cache.revision"
+      }
+    },
+    "cacheTTL": {
+      "type": "admin",
+      "destination": "backend",
+      "default": 3600,
+      "params": {
+        "type": "text" ,
+        "label": "Cache TTL time in seconds (for product ratings)"
       }
     }
   },

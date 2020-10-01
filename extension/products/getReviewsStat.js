@@ -1,10 +1,5 @@
-const LRU = require('lru-cache')
+const { wrap } = require('../lib/cache')
 const callApi = require('../api/callApi')
-
-const lruCache = new LRU({
-  max: 1000,
-  maxAge: 6e5 // 10 minutes,
-})
 
 /**
  * Get reviews statistic for given product IDs
@@ -13,39 +8,41 @@ const lruCache = new LRU({
  * @returns {Promise<{Object[]}>}
  */
 module.exports = async (context, productIds) => {
-  const notInCache = productIds.filter(productId => !lruCache.has(productId))
+  const ratings = await wrap(context, productIds, async (missingProductIds) => {
+    const initial = missingProductIds.reduce((acc, prodId) => {
+      acc[prodId] = {
+        count: 0,
+        average: 0,
+        reviewCount: 0
+      }
+      return acc
+    }, {})
 
-  if (notInCache.length) {
     try {
       const response = await callApi(context, {
         uri: '/data/statistics.json',
         qs: {
-          filter: `ProductId:${notInCache.map(encodeURIComponent).join(',')}`,
+          filter: `ProductId:${missingProductIds.map(encodeURIComponent).join(',')}`,
           stats: 'Reviews'
         }
       })
       if (response) {
         const { Results } = response
         if (Results.length) {
-          Results.forEach(result => {
-            if (productIds.includes(result.ProductStatistics.ProductId)) {
-              lruCache.set(result.ProductStatistics.ProductId, {
-                count: result.ProductStatistics.ReviewStatistics.TotalReviewCount || 0,
-                average: Math.round(result.ProductStatistics.ReviewStatistics.AverageOverallRating * 20),
-                reviewCount: result.ProductStatistics.ReviewStatistics.TotalReviewCount
-              })
+          return Results.reduce((acc, result) => {
+            acc[result.ProductStatistics.ProductId] = {
+              count: result.ProductStatistics.ReviewStatistics.TotalReviewCount || 0,
+              average: Math.round(result.ProductStatistics.ReviewStatistics.AverageOverallRating * 20),
+              reviewCount: result.ProductStatistics.ReviewStatistics.TotalReviewCount
             }
-          })
+            return acc
+          }, initial)
         }
       }
     } catch (ignore) { /* Already logged */ }
-  }
 
-  const ratings = productIds
-    .reduce((acc, productId) => {
-      acc[productId] = lruCache.get(productId)
-      return acc
-    }, {})
+    return initial
+  })
 
   return {
     ratings

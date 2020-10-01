@@ -12,7 +12,7 @@
     "lint": "standard"
   },
   "dependencies": {
-    "lru-cache": "^6.0.0",
+    "@shopgate/connect-redis-client": "^1.0.0",
     "request": "^2.88.2"
   },
   "devDependencies": {
