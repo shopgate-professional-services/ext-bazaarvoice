@@ -29,7 +29,7 @@
         "label": "Rounding step for review rating, eg. 0.1 for 3.2 is 3.2, 0.5 for 3.2 is 3.5"
       }
     },
-    "reviewsStatFilterFields": {
+    "reviewsFilterFields": {
       "type": "admin",
       "destination": "backend",
       "default": null,

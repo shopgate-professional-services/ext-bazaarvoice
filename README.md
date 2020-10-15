@@ -20,7 +20,7 @@ Bazaarvoice integration version: [5.4](https://developer.bazaarvoice.com/convers
 - `baseUrl` (string): base url of bazaarvoice integration (default: https://api.bazaarvoice.com)
 - `apiKey` (string): API key for bazaarvoice integration
 - `sortMap` (json): map of sort options
-- `reviewsStatFilterFields` (json): additional filter fields when retrieving reviews
+- `reviewsFilterFields` (json): additional filter fields when retrieving reviews
 - `reviewSubmissionFields` (json): additional fields to submit along with review
 - `cacheTTL` (number): cache lifetime in seconds for product ratings
 - `ratingRoundingStep` (decimal): Rounding step for review rating, eg. 
@@ -34,7 +34,7 @@ Bazaarvoice integration version: [5.4](https://developer.bazaarvoice.com/convers
   "baseUrl": "https://api.bazaarvoice.com",
   "apiKey": "**********************",
   "ratingRoundingStep": 0.5,
-  "reviewsStatFilterFields": {
+  "reviewsFilterFields": {
     "ContentLocale": "de_DE,de_AT,de_CH"
   },
   "reviewSubmissionFields": {

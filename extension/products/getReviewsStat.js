@@ -1,5 +1,6 @@
 const { wrap } = require('../lib/cache')
 const callApi = require('../api/callApi')
+const { toEngageRating, ceilRound, toApiLocale, toQsFilter } = require('../lib/helpers')
 
 /**
  * Get reviews statistic for given product IDs
@@ -9,13 +10,7 @@ const callApi = require('../api/callApi')
  */
 module.exports = async (context, productIds) => {
   const ratings = await wrap(context, productIds, async (missingProductIds) => {
-    const { reviewsStatFilterFields, languageId, ratingRoundingStep } = context.config
-
-    const roundFractions = 1.0 / ratingRoundingStep
-    const normalizeRating = (rating) => Math.ceil(rating * 20 * roundFractions) / roundFractions
-
-    // Convert de-de into de_DE
-    const loc = `${languageId.substring(0, 2)}_${languageId.substring(3, 5).toUpperCase()}`
+    const { reviewsFilterFields, languageId, ratingRoundingStep } = context.config
 
     const initial = missingProductIds.reduce((acc, prodId) => {
       acc[prodId] = {
@@ -28,14 +23,9 @@ module.exports = async (context, productIds) => {
 
     const filters = {
       ProductId: missingProductIds.map(encodeURIComponent).join(','),
-      ContentLocale: loc,
-      ...reviewsStatFilterFields
+      ContentLocale: toApiLocale(languageId),
+      ...reviewsFilterFields
     }
-
-    const filter = Object.keys(filters).reduce((acc, filter) => {
-      acc.push(`${filter}:${filters[filter]}`)
-      return acc
-    }, [])
 
     try {
       const response = await callApi(context, {
@@ -44,7 +34,7 @@ module.exports = async (context, productIds) => {
           indices: false
         },
         qs: {
-          filter,
+          filter: toQsFilter(filters),
           stats: 'Reviews'
         }
       })
@@ -54,7 +44,10 @@ module.exports = async (context, productIds) => {
           return Results.reduce((acc, result) => {
             acc[result.ProductStatistics.ProductId] = {
               count: result.ProductStatistics.ReviewStatistics.TotalReviewCount || 0,
-              average: normalizeRating(result.ProductStatistics.ReviewStatistics.AverageOverallRating),
+              average: toEngageRating(ceilRound(
+                result.ProductStatistics.ReviewStatistics.AverageOverallRating,
+                ratingRoundingStep
+              )),
               reviewCount: result.ProductStatistics.ReviewStatistics.TotalReviewCount
             }
             return acc

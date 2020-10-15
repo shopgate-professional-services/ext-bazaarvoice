@@ -1,4 +1,5 @@
 const callApi = require('../api/callApi')
+const { toEngageRating, ceilRound, toApiLocale, toQsFilter } = require('../lib/helpers')
 
 /**
  * @param {Object} context
@@ -6,10 +7,7 @@ const callApi = require('../api/callApi')
  * @returns {Promise<{coupons}>}
  */
 module.exports = async (context, input) => {
-  const { sortMap, ratingRoundingStep } = context.config
-
-  const roundFractions = 1.0 / ratingRoundingStep
-  const normalizeRating = (rating) => Math.ceil(rating * 20 * roundFractions) / roundFractions
+  const { sortMap, ratingRoundingStep, languageId, reviewsFilterFields } = context.config
 
   const {
     productId,
@@ -19,12 +17,19 @@ module.exports = async (context, input) => {
     sort
   } = input
 
-  const prodId = baseProductId || productId
+  const filters = {
+    ProductId: encodeURIComponent(baseProductId || productId),
+    ContentLocale: toApiLocale(languageId),
+    ...reviewsFilterFields
+  }
 
   const { Results = [], TotalResults = 0 } = await callApi(context, {
     uri: '/data/reviews.json',
+    qsStringifyOptions: {
+      indices: false
+    },
     qs: {
-      filter: `ProductId:${encodeURIComponent(prodId)}`,
+      filter: toQsFilter(filters),
       stats: 'Reviews',
       limit,
       offset,
@@ -36,7 +41,7 @@ module.exports = async (context, input) => {
     id: result.Id,
     author: result.UserNickname,
     date: result.LastModificationTime,
-    rate: normalizeRating(result.Rating),
+    rate: toEngageRating(ceilRound(result.Rating, ratingRoundingStep)),
     title: result.Title,
     review: result.ReviewText
   }))
