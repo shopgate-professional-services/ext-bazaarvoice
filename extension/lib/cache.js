@@ -13,7 +13,7 @@ function getClient (context) {
     redisClient = new ConnectRedisClient(
       `@shopgate-project/bazaarvoice-${context.config.cacheRevision}`,
       context.meta.appId,
-      context.config.redisClientSecret,
+      context.config.redisClientSecret
     )
     context.log.info(`Redis client initialized with revision [${context.config.cacheRevision || 1}] `)
   }

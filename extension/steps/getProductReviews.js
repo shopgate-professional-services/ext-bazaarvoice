@@ -6,7 +6,10 @@ const callApi = require('../api/callApi')
  * @returns {Promise<{coupons}>}
  */
 module.exports = async (context, input) => {
-  const { sortMap } = context.config
+  const { sortMap, ratingRoundingStep } = context.config
+
+  const roundFractions = 1.0 / ratingRoundingStep
+  const normalizeRating = (rating) => Math.ceil(rating * 20 * roundFractions) / roundFractions
 
   const {
     productId,
@@ -18,7 +21,7 @@ module.exports = async (context, input) => {
 
   const prodId = baseProductId || productId
 
-  const { Results, TotalResults } = await callApi(context, {
+  const { Results = [], TotalResults = 0 } = await callApi(context, {
     uri: '/data/reviews.json',
     qs: {
       filter: `ProductId:${encodeURIComponent(prodId)}`,
@@ -27,13 +30,13 @@ module.exports = async (context, input) => {
       offset,
       sort: sortMap[sort] || sort
     }
-  })
+  }) || {}
 
   const reviews = Results.map(result => ({
     id: result.Id,
     author: result.UserNickname,
     date: result.LastModificationTime,
-    rate: Math.round(result.Rating * 20),
+    rate: normalizeRating(result.Rating),
     title: result.Title,
     review: result.ReviewText
   }))

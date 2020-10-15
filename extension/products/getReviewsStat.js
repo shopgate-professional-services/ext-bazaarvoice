@@ -12,7 +12,7 @@ module.exports = async (context, productIds) => {
     const { reviewsStatFilterFields, languageId, ratingRoundingStep } = context.config
 
     const roundFractions = 1.0 / ratingRoundingStep
-    const normalizeRating = (rating) => Math.round(rating * 20 * roundFractions) / roundFractions
+    const normalizeRating = (rating) => Math.ceil(rating * 20 * roundFractions) / roundFractions
 
     // Convert de-de into de_DE
     const loc = `${languageId.substring(0, 2)}_${languageId.substring(3, 5).toUpperCase()}`
