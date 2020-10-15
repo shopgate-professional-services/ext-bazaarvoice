@@ -8,8 +8,12 @@ Bazaarvoice integration version: [5.4](https://developer.bazaarvoice.com/convers
 - `baseUrl` (string): base url of bazaarvoice integration (default: https://api.bazaarvoice.com)
 - `apiKey` (string): API key for bazaarvoice integration
 - `sortMap` (json): map of sort options
+- `reviewsStatFilterFields` (json): additional filter fields when retrieving reviews
 - `reviewSubmissionFields` (json): additional fields to submit along with review
 - `cacheTTL` (number): cache lifetime in seconds for product ratings
+- `ratingRoundingStep` (decimal): Rounding step for review rating, eg. 
+    - 0.1: 3.2 -> 3.2
+    - 0.5: 3.27 -> 3.5
 
 ## About Shopgate
 

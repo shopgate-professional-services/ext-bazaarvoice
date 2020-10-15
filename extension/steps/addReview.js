@@ -7,7 +7,7 @@ const InternalError = require('../errors/InternalError')
  * @returns {Promise<{coupons}>}
  */
 module.exports = async (context, input) => {
-  const { reviewSubmissionFields } = context.config
+  const { reviewSubmissionFields, languageId } = context.config
   const {
     productId,
     rate,
@@ -15,6 +15,9 @@ module.exports = async (context, input) => {
     title,
     review
   } = input
+
+  // Convert de-de into de_DE
+  const loc = `${languageId.substring(0, 2)}_${languageId.substring(3, 5).toUpperCase()}`
 
   let response = await callApi(context, {
     uri: '/data/submitreview.json',
@@ -27,6 +30,7 @@ module.exports = async (context, input) => {
       UserNickname: author,
       Title: title,
       ReviewText: review,
+      Locale: loc,
       ...reviewSubmissionFields
     }
   })

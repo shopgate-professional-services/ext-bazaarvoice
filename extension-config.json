@@ -20,6 +20,24 @@
         "label": "API key"
       }
     },
+    "ratingRoundingStep": {
+      "type": "admin",
+      "destination": "backend",
+      "default": 0.5,
+      "params": {
+        "type": "text" ,
+        "label": "Rounding step for review rating, eg. 0.1 for 3.2 is 3.2, 0.5 for 3.2 is 3.5"
+      }
+    },
+    "reviewsStatFilterFields": {
+      "type": "admin",
+      "destination": "backend",
+      "default": null,
+      "params": {
+        "type": "json" ,
+        "label": "Send additional filters for reviews"
+      }
+    },
     "reviewSubmissionFields": {
       "type": "admin",
       "destination": "backend",
@@ -61,6 +79,16 @@
       "params": {
         "type": "text" ,
         "label": "Cache TTL time in seconds (for product ratings)"
+      }
+    },
+    "languageId": {
+      "type": "bigApi",
+      "destination": "backend",
+      "params": {
+        "method": "GET",
+        "service": "shop",
+        "path": "/v1/%(shopId)s",
+        "key": "languageId"
       }
     }
   },

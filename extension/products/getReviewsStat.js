@@ -9,6 +9,14 @@ const callApi = require('../api/callApi')
  */
 module.exports = async (context, productIds) => {
   const ratings = await wrap(context, productIds, async (missingProductIds) => {
+    const { reviewsStatFilterFields, languageId, ratingRoundingStep } = context.config
+
+    const roundFractions = 1.0 / ratingRoundingStep
+    const normalizeRating = (rating) => Math.round(rating * 20 * roundFractions) / roundFractions
+
+    // Convert de-de into de_DE
+    const loc = `${languageId.substring(0, 2)}_${languageId.substring(3, 5).toUpperCase()}`
+
     const initial = missingProductIds.reduce((acc, prodId) => {
       acc[prodId] = {
         count: 0,
@@ -18,11 +26,25 @@ module.exports = async (context, productIds) => {
       return acc
     }, {})
 
+    const filters = {
+      ProductId: missingProductIds.map(encodeURIComponent).join(','),
+      ContentLocale: loc,
+      ...reviewsStatFilterFields
+    }
+
+    const filter = Object.keys(filters).reduce((acc, filter) => {
+      acc.push(`${filter}:${filters[filter]}`)
+      return acc
+    }, [])
+
     try {
       const response = await callApi(context, {
         uri: '/data/statistics.json',
+        qsStringifyOptions: {
+          indices: false
+        },
         qs: {
-          filter: `ProductId:${missingProductIds.map(encodeURIComponent).join(',')}`,
+          filter,
           stats: 'Reviews'
         }
       })
@@ -32,7 +54,7 @@ module.exports = async (context, productIds) => {
           return Results.reduce((acc, result) => {
             acc[result.ProductStatistics.ProductId] = {
               count: result.ProductStatistics.ReviewStatistics.TotalReviewCount || 0,
-              average: Math.round(result.ProductStatistics.ReviewStatistics.AverageOverallRating * 20),
+              average: normalizeRating(result.ProductStatistics.ReviewStatistics.AverageOverallRating),
               reviewCount: result.ProductStatistics.ReviewStatistics.TotalReviewCount
             }
             return acc
