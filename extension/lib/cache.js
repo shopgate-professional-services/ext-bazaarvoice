@@ -9,11 +9,11 @@ let redisClient = null
  */
 function getClient (context) {
   if (!redisClient) {
-    CACHE_TTL = context.config.cacheTTL || 3600
+    CACHE_TTL = context.config.cacheTTL || CACHE_TTL
     redisClient = new ConnectRedisClient(
       `@shopgate-project/bazaarvoice-${context.config.cacheRevision}`,
       context.meta.appId,
-      'mTNUSZh2vBn2BQNGc4KC4smy'
+      context.config.redisClientSecret,
     )
     context.log.info(`Redis client initialized with revision [${context.config.cacheRevision || 1}] `)
   }
