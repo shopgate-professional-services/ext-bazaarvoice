@@ -27,6 +27,29 @@ Bazaarvoice integration version: [5.4](https://developer.bazaarvoice.com/convers
     - 0.1: 3.2 -> 3.2
     - 0.5: 3.27 -> 3.5
 
+## Configuration example
+
+```json
+{
+  "baseUrl": "https://api.bazaarvoice.com",
+  "apiKey": "**********************",
+  "ratingRoundingStep": 0.5,
+  "reviewsStatFilterFields": {
+    "ContentLocale": "de_DE,de_AT,de_CH"
+  },
+  "reviewSubmissionFields": {
+    "AgreedToTermsAndConditions": true
+  },
+  "sortMap": {
+    "relevance": "SubmissionTime:desc",
+    "dateDesc": "SubmissionTime:desc",
+    "dateAsc": "SubmissionTime:asc"
+  },
+  "cacheTTL": 3600
+}
+```
+
+
 ## About Shopgate
 
 Shopgate is the leading mobile commerce platform.
