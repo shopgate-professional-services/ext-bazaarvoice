@@ -1,5 +1,5 @@
 const callApi = require('../api/callApi')
-const { toEngageRating, ceilRound, toApiLocale, toQsFilter } = require('../lib/helpers')
+const { toEngageRating, mathRound, toApiLocale, toQsFilter } = require('../lib/helpers')
 
 /**
  * @param {Object} context
@@ -41,7 +41,7 @@ module.exports = async (context, input) => {
     id: result.Id,
     author: result.UserNickname,
     date: result.LastModificationTime,
-    rate: toEngageRating(ceilRound(result.Rating, ratingRoundingStep)),
+    rate: toEngageRating(mathRound(result.Rating, ratingRoundingStep)),
     title: result.Title,
     review: result.ReviewText
   }))

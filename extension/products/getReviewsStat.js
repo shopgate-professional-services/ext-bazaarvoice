@@ -1,6 +1,6 @@
 const { wrap } = require('../lib/cache')
 const callApi = require('../api/callApi')
-const { toEngageRating, ceilRound, toApiLocale, toQsFilter } = require('../lib/helpers')
+const { toEngageRating, mathRound, toApiLocale, toQsFilter } = require('../lib/helpers')
 
 /**
  * Get reviews statistic for given product IDs
@@ -44,7 +44,7 @@ module.exports = async (context, productIds) => {
           return Results.reduce((acc, result) => {
             acc[result.ProductStatistics.ProductId] = {
               count: result.ProductStatistics.ReviewStatistics.TotalReviewCount || 0,
-              average: toEngageRating(ceilRound(
+              average: toEngageRating(mathRound(
                 result.ProductStatistics.ReviewStatistics.AverageOverallRating,
                 ratingRoundingStep
               )),

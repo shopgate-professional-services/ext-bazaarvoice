@@ -11,9 +11,9 @@ module.exports.toEngageRating = rating => rating * 20
  * @param {number} roundingStep
  * @returns {number}
  */
-module.exports.ceilRound = (rating, roundingStep = 0.5) => {
+module.exports.mathRound = (rating, roundingStep = 0.5) => {
   const roundFractions = 1.0 / roundingStep
-  return Math.ceil(rating * roundFractions) / roundFractions
+  return Math.round(rating * roundFractions) / roundFractions
 }
 
 /**
