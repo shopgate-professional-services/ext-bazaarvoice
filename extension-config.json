@@ -1,0 +1,118 @@
+{
+  "version": "1.0.0",
+  "id": "@shopgate-project/bazaarvoice",
+  "configuration": {
+    "baseUrl": {
+      "type": "admin",
+      "destination": "backend",
+      "default": "https://api.bazaarvoice.com",
+      "params": {
+        "type": "text" ,
+        "label": "Bazaarvoice base url"
+      }
+    },
+    "apiKey": {
+      "type": "admin",
+      "destination": "backend",
+      "default": null,
+      "params": {
+        "type": "text" ,
+        "label": "API key"
+      }
+    },
+    "ratingRoundingStep": {
+      "type": "admin",
+      "destination": "backend",
+      "default": 0.5,
+      "params": {
+        "type": "text" ,
+        "label": "Rounding step for review rating, eg. 0.1 for 3.2 is 3.2, 0.5 for 3.2 is 3.5"
+      }
+    },
+    "reviewsFilterFields": {
+      "type": "admin",
+      "destination": "backend",
+      "default": null,
+      "params": {
+        "type": "json" ,
+        "label": "Send additional filters for reviews"
+      }
+    },
+    "reviewSubmissionFields": {
+      "type": "admin",
+      "destination": "backend",
+      "default": {
+        "AgreedToTermsAndConditions": true
+      },
+      "params": {
+        "type": "json" ,
+        "label": "Send additional fields when review is submitted"
+      }
+    },
+    "sortMap": {
+      "type": "admin",
+      "destination": "backend",
+      "default": {
+        "relevance": "SubmissionTime:desc",
+        "dateDesc": "SubmissionTime:desc",
+        "dateAsc": "SubmissionTime:asc"
+      },
+      "params": {
+        "type": "json" ,
+        "label": "Sort map for Bazaarvoice"
+      }
+    },
+    "cacheRevision": {
+      "type": "bigApi",
+      "destination": "backend",
+      "params": {
+        "method": "GET",
+        "service": "shop",
+        "path": "/v1/%(shopId)s/id",
+        "key": "data.cache.revision"
+      }
+    },
+    "cacheTTL": {
+      "type": "admin",
+      "destination": "backend",
+      "default": 3600,
+      "params": {
+        "type": "text" ,
+        "label": "Cache TTL time in seconds (for product ratings)"
+      }
+    },
+    "redisClientSecret": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
+        "key": "value.@shopgate-project.redisSecret"
+      }
+    },
+    "languageId": {
+      "type": "bigApi",
+      "destination": "backend",
+      "params": {
+        "method": "GET",
+        "service": "shop",
+        "path": "/v1/%(shopId)s",
+        "key": "languageId"
+      }
+    }
+  },
+  "components": [],
+  "steps": [
+    {
+      "path": "extension/hooks/addReviewsStat.js",
+      "hooks": [
+        "shopgate.catalog.getProducts.v1:after",
+        "shopgate.catalog.getProductsByIds.v1:after"
+      ],
+      "input": [{ "key": "products" }],
+      "output": [{ "key": "products" }]
+    }
+  ]
+}
