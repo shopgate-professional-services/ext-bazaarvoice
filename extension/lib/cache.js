@@ -34,7 +34,7 @@ module.exports.wrap = async (context, keys, retrieveCb, ttl = CACHE_TTL) => {
   let data = await new Promise((resolve) => {
     const timedOut = setTimeout(() => {
       context.log.info({ keys }, 'Redis cache get took too long.')
-      resolve(null)
+      resolve({})
     }, 200)
 
     const multi = redisClient.client.multi()
