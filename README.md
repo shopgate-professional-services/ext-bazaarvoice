@@ -23,7 +23,7 @@ Bazaarvoice integration version: [5.4](https://developer.bazaarvoice.com/convers
 - `reviewsFilterFields` (json): additional filter fields when retrieving reviews
 - `reviewSubmissionFields` (json): additional fields to submit along with review
 - `cacheTTL` (number): cache lifetime in seconds for product ratings
-- `ratingRoundingStep` (decimal): Rounding step for review rating, eg. 
+- `ratingRoundingStep` (decimal): Rounding step for review rating, eg.
     - 0.1: 3.2 -> 3.2
     - 0.5: 3.27 -> 3.5
 
@@ -38,7 +38,8 @@ Bazaarvoice integration version: [5.4](https://developer.bazaarvoice.com/convers
     "ContentLocale": "de_DE,de_AT,de_CH"
   },
   "reviewSubmissionFields": {
-    "AgreedToTermsAndConditions": true
+    "AgreedToTermsAndConditions": true,
+    "CampaignId": "App"
   },
   "sortMap": {
     "relevance": "SubmissionTime:desc",

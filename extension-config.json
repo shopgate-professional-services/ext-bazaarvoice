@@ -42,7 +42,8 @@
       "type": "admin",
       "destination": "backend",
       "default": {
-        "AgreedToTermsAndConditions": true
+        "AgreedToTermsAndConditions": true,
+        "CampaignId": "App"
       },
       "params": {
         "type": "json" ,
