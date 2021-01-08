@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.1.0",
   "id": "@shopgate-project/bazaarvoice",
   "configuration": {
     "baseUrl": {
@@ -7,7 +7,7 @@
       "destination": "backend",
       "default": "https://api.bazaarvoice.com",
       "params": {
-        "type": "text" ,
+        "type": "text",
         "label": "Bazaarvoice base url"
       }
     },
@@ -16,7 +16,7 @@
       "destination": "backend",
       "default": null,
       "params": {
-        "type": "text" ,
+        "type": "text",
         "label": "API key"
       }
     },
@@ -25,7 +25,7 @@
       "destination": "backend",
       "default": 0.5,
       "params": {
-        "type": "text" ,
+        "type": "text",
         "label": "Rounding step for review rating, eg. 0.1 for 3.2 is 3.2, 0.5 for 3.2 is 3.5"
       }
     },
@@ -34,7 +34,7 @@
       "destination": "backend",
       "default": null,
       "params": {
-        "type": "json" ,
+        "type": "json",
         "label": "Send additional filters for reviews"
       }
     },
@@ -46,7 +46,7 @@
         "CampaignId": "App"
       },
       "params": {
-        "type": "json" ,
+        "type": "json",
         "label": "Send additional fields when review is submitted"
       }
     },
@@ -59,7 +59,7 @@
         "dateAsc": "SubmissionTime:asc"
       },
       "params": {
-        "type": "json" ,
+        "type": "json",
         "label": "Sort map for Bazaarvoice"
       }
     },
@@ -78,7 +78,7 @@
       "destination": "backend",
       "default": 3600,
       "params": {
-        "type": "text" ,
+        "type": "text",
         "label": "Cache TTL time in seconds (for product ratings)"
       }
     },
@@ -104,7 +104,24 @@
       }
     }
   },
-  "components": [],
+  "components": [
+    {
+      "id": "ReviewComment",
+      "path": "frontend/portals/ReviewComment",
+      "target": "product.reviews.entry.after",
+      "type": "portals"
+    },
+    {
+      "type": "translations",
+      "path": "frontend/locale/de-DE.json",
+      "id": "locale/de-DE"
+    },
+    {
+      "type": "translations",
+      "path": "frontend/locale/en-US.json",
+      "id": "locale/en-US"
+    }
+  ],
   "steps": [
     {
       "path": "extension/hooks/addReviewsStat.js",
@@ -112,8 +129,16 @@
         "shopgate.catalog.getProducts.v1:after",
         "shopgate.catalog.getProductsByIds.v1:after"
       ],
-      "input": [{ "key": "products" }],
-      "output": [{ "key": "products" }]
+      "input": [
+        {
+          "key": "products"
+        }
+      ],
+      "output": [
+        {
+          "key": "products"
+        }
+      ]
     }
   ]
 }

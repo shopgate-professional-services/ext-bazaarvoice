@@ -1,0 +1,20 @@
+{
+  "name": "@shopgate-project/bazaarvoice",
+  "version": "1.0.1",
+  "description": "",
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "eslint --parser babel-eslint --ignore-path ../.gitignore --ext .js --ext .jsx ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@shopgate/engage": "^6.11.0",
+    "@shopgate/eslint-config": "^6.11.0",
+    "eslint": "^6.8.0"
+  },
+  "peerDependencies": {
+    "@shopgate/engage": "^6.13.11",
+    "react-redux": "^5.1.2",
+    "glamor": "^2.20.40"
+  }
+}
