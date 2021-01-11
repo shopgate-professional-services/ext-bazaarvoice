@@ -43,7 +43,10 @@ module.exports = async (context, input) => {
     date: result.LastModificationTime,
     rate: toEngageRating(mathRound(result.Rating, ratingRoundingStep)),
     title: result.Title,
-    review: result.ReviewText
+    review: result.ReviewText,
+    additionalData: {
+      clientResponses: result.ClientResponses || []
+    }
   }))
 
   return {
