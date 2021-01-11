@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'glamor';
-import I18n from '@shopgate/pwa-common/components/I18n';
-import { themeConfig } from '@shopgate/pwa-common/helpers/config';
+import { themeConfig } from '@shopgate/engage';
+import { I18n } from '@shopgate/engage/components';
 
 const { colors } = themeConfig;
 const styles = {
@@ -52,11 +52,7 @@ const ReviewComment = ({ review }) => {
 };
 
 ReviewComment.propTypes = {
-  review: PropTypes.shape(),
-};
-
-ReviewComment.defaultProps = {
-  review: {},
+  review: PropTypes.shape().isRequired,
 };
 
 export default ReviewComment;
