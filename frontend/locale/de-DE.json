@@ -1,5 +1,6 @@
 {
   "reviews": {
-    "review_form_author": "Spitzname"
+    "review_form_author": "Spitzname",
+    "review_form_text": "Ihre Bewertung (mindestens 40 Zeichen)"
   }
 }

@@ -1,5 +1,6 @@
 {
   "reviews": {
-    "review_form_author": "Nickname"
+    "review_form_author": "Nickname",
+    "review_form_text": "Product review (minimum 40 Characters)"
   }
 }
